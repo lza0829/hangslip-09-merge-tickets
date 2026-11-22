@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import date, datetime
 
-from app.db import connect
+from app.db import CLOSED_STATUSES, connect
 
 
 def today_str() -> str:
@@ -46,10 +46,18 @@ def seal_day(day: str | None = None, note: str = "") -> dict:
         conn.close()
 
 
+def in_flight_sql() -> str:
+    marks = ",".join("?" for _ in CLOSED_STATUSES)
+    return f"SELECT COUNT(*) AS c FROM hang_tickets WHERE status NOT IN ({marks})"
+
+
+def count_in_flight(conn) -> int:
+    return conn.execute(in_flight_sql(), CLOSED_STATUSES).fetchone()["c"]
+
+
 def refresh_in_flight(conn) -> int:
-    n = conn.execute(
-        "SELECT COUNT(*) AS c FROM hang_tickets WHERE status NOT IN ('已取','丢失隔离')"
-    ).fetchone()["c"]
+    """在途水位：只认现行票籍的票；并票后被吞的子票（已并）不再占水位。"""
+    n = count_in_flight(conn)
     now = datetime.now().replace(microsecond=0).isoformat(sep=" ")
     conn.execute(
         """INSERT INTO watermarks(key, value, updated_at) VALUES ('在途票', ?, ?)

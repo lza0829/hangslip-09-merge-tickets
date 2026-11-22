@@ -14,7 +14,11 @@ export default function Process() {
 
   async function load() {
     const all = await api.挂牌列表();
-    setRows(all.filter((r) => !["已取", "超期隔离", "丢失隔离"].includes(r.status)));
+    setRows(
+      all.filter(
+        (r) => !["已取", "超期隔离", "丢失隔离", "已并"].includes(r.status)
+      )
+    );
   }
 
   useEffect(() => {
@@ -43,6 +47,7 @@ export default function Process() {
             <th>门店</th>
             <th>顾客</th>
             <th>现行</th>
+            <th>件数</th>
             <th>承诺日</th>
             <th>推进</th>
           </tr>
@@ -56,6 +61,7 @@ export default function Process() {
               <td>
                 <span className={`badge ${r.status}`}>{r.status}</span>
               </td>
+              <td>{r.item_qty}</td>
               <td>{r.due_date}</td>
               <td>
                 <div className="row">

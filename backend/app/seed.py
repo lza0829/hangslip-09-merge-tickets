@@ -51,8 +51,8 @@ def seed_if_empty() -> None:
             )
             for garment, qty, remark in items[ticket_no]:
                 conn.execute(
-                    "INSERT INTO ticket_items(ticket_no, garment, qty, remark) VALUES (?,?,?,?)",
-                    (ticket_no, garment, qty, remark),
+                    "INSERT INTO ticket_items(ticket_no, origin_ticket_no, garment, qty, remark) VALUES (?,?,?,?,?)",
+                    (ticket_no, ticket_no, garment, qty, remark),
                 )
             conn.execute(
                 """INSERT INTO process_events(ticket_no, from_status, to_status, operator, occurred_at, note)
@@ -85,7 +85,7 @@ def seed_if_empty() -> None:
         )
         # refresh watermark
         openish = conn.execute(
-            "SELECT COUNT(*) AS c FROM hang_tickets WHERE status NOT IN ('已取','丢失隔离')"
+            "SELECT COUNT(*) AS c FROM hang_tickets WHERE status NOT IN ('已取','丢失隔离','已并')"
         ).fetchone()["c"]
         conn.execute(
             "UPDATE watermarks SET value=?, updated_at=? WHERE key='在途票'",

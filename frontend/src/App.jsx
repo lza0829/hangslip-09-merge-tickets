@@ -2,6 +2,7 @@ import { NavLink, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Intake from "./pages/Intake.jsx";
 import Process from "./pages/Process.jsx";
+import Merge from "./pages/Merge.jsx";
 import Ready from "./pages/Ready.jsx";
 import Quarantine from "./pages/Quarantine.jsx";
 import Stores from "./pages/Stores.jsx";
@@ -12,6 +13,7 @@ const links = [
   ["/", "总览", true],
   ["/收衣", "收衣开票"],
   ["/工序", "工序轨"],
+  ["/并票", "并票合单"],
   ["/待取", "待取核销"],
   ["/隔离", "超期隔离"],
   ["/门店", "门店衣架"],
@@ -40,6 +42,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/收衣" element={<Intake />} />
           <Route path="/工序" element={<Process />} />
+          <Route path="/并票" element={<Merge />} />
           <Route path="/待取" element={<Ready />} />
           <Route path="/隔离" element={<Quarantine />} />
           <Route path="/门店" element={<Stores />} />

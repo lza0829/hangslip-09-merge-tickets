@@ -39,6 +39,8 @@ export const api = {
       method: "POST",
       body: JSON.stringify(body),
     }),
+  并票: (body) => req("/并票", { method: "POST", body: JSON.stringify(body) }),
+  并票列表: () => req("/并票"),
   隔离列表: () => req("/隔离"),
   日闸今日: () => req("/日闸/今日"),
   日闸列表: () => req("/日闸"),

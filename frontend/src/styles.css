@@ -302,7 +302,8 @@ th {
   color: #f0a29d;
 }
 
-.badge.已取 {
+.badge.已取,
+.badge.已并 {
   border-color: rgba(143, 179, 201, 0.55);
   color: var(--steam);
 }

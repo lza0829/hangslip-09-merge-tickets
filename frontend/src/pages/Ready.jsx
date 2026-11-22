@@ -37,6 +37,8 @@ export default function Ready() {
           <tr>
             <th>票号</th>
             <th>顾客</th>
+            <th>件数</th>
+            <th>并单</th>
             <th>承诺日</th>
             <th>暗码</th>
             <th>操作</th>
@@ -47,6 +49,10 @@ export default function Ready() {
             <tr key={r.ticket_no}>
               <td>{r.ticket_no}</td>
               <td>{r.customer_name}</td>
+              <td>
+                {r.item_qty}
+                {r.children?.length ? `（含 ${r.children.length} 张并单）` : ""}
+              </td>
               <td>{r.due_date}</td>
               <td>
                 <input

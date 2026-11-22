@@ -3,6 +3,7 @@ from __future__ import annotations
 from fastapi import APIRouter, Query
 from pydantic import BaseModel, Field
 
+from app.services import merge as merge_svc
 from app.services import tickets as svc
 
 router = APIRouter(tags=["挂牌"])
@@ -40,6 +41,25 @@ class QuarantineIn(BaseModel):
     kind: str
     reason: str = ""
     operator: str = "店员"
+
+
+class MergeIn(BaseModel):
+    parent_ticket_no: str
+    child_ticket_nos: list[str]
+    operator: str = "店员"
+    note: str = ""
+
+
+@router.get("/并票")
+def list_merges():
+    return merge_svc.list_merges()
+
+
+@router.post("/并票")
+def merge(body: MergeIn):
+    return merge_svc.merge_tickets(
+        body.parent_ticket_no, body.child_ticket_nos, body.operator, body.note
+    )
 
 
 @router.get("/挂牌")
